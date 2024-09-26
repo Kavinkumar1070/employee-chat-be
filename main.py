@@ -28,7 +28,7 @@ app.add_middleware(
 )
 
 # Serve static files from the "frontend_project" directory
-app.mount("/templates", StaticFiles(directory="../Frontend/templates"), name="templates")
+app.mount("/templates", StaticFiles(directory="../employee-chat-fe/templates"), name="templates")
 
 # URL to fetch the HTML from
 FRONTEND_URL = "http://127.0.0.1:5500/templates/index.html"  # Replace with your actual URL
