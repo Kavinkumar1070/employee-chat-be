@@ -3,7 +3,7 @@ import json
 import logging
 import httpx  # Import httpx for making HTTP requests
 from fastapi import (Depends, FastAPI, HTTPException, WebSocket,
-                     WebSocketDisconnect, status)
+                    WebSocketDisconnect, status)
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,7 +14,7 @@ from chatcode.function import *
 from chatcode.groq_function import *
 from chatcode.onbapi_call import *
 from chatcode.onbfunction import (collect_user_input, get_jsonfile,
-                                  validate_input)
+                                validate_input)
 
 app = FastAPI()
 
@@ -31,7 +31,7 @@ app.add_middleware(
 app.mount("/templates", StaticFiles(directory="../employee-chat-fe/templates"), name="templates")
 
 # URL to fetch the HTML from
-FRONTEND_URL = "http://127.0.0.1:5500/templates/index.html"  # Replace with your actual URL
+FRONTEND_URL = "http://127.0.0.1:5000"  # Replace with your actual URL
 
 @app.get("/")
 async def get():
