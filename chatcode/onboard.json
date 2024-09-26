@@ -1,0 +1,29 @@
+{
+    "firstname": {
+        "datatype": "string"
+    },
+    "lastname": {
+        "datatype": "string"
+    },
+    "dateofbirth": {
+        "datatype": "date"
+    },
+    "contactnumber": {
+        "datatype": "mobile"
+    },
+    "emailaddress": {
+        "datatype": "email"
+    },
+    "address": {
+        "datatype": "string"
+    },
+    "nationality": {
+        "datatype": "string"
+    },
+    "gender": {
+        "datatype": "gender"
+    },
+    "maritalstatus": {
+        "datatype": "maritalstatus"
+    }
+}

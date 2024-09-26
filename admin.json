@@ -1,0 +1,656 @@
+{
+    "create personal detail": {
+        "project": "create personal detail",
+        "project description": "Create a new personal record with provided details.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/personal/employees",
+        "method": "POST",
+        "payload": {
+            "firstname": {
+                "description": "First name of the employee",
+                "datatype": "string",
+                "required": true,
+                "assigned": "None"
+            },
+            "lastname": {
+                "description": "Last name of the employee",
+                "datatype": "string",
+                "required": true,
+                "assigned": "None"
+            },
+            "dateofbirth": {
+                "description": "Date of birth of the employee in year month day format Ex:YYYY-MM-DD",
+                "datatype": "date",
+                "format": "%Y-%m-%d",
+                "required": true,
+                "assigned": "None"
+            },
+            "contactnumber": {
+                "description": "Contact number of the employee",
+                "datatype": "mobile",
+                "required": true,
+                "assigned": "None"
+            },
+            "emailaddress": {
+                "description": "Email address of the employee",
+                "datatype": "regex",
+                "format": "^[a-z0-9]+@[a-z0-9]+\\.com$",
+                "required": true,
+                "assigned": "None"
+            },
+            "address": {
+                "description": "Residential address of the employee",
+                "datatype": "string",
+                "required": true,
+                "assigned": "None"
+            },
+            "nationality": {
+                "description": "Nationality of the employee",
+                "datatype": "string",
+                "required": true,
+                "assigned": "Indian"
+            },
+            "gender": {
+                "description": "Gender of the employee  [male, female, other]",
+                "datatype": "choices",
+                "required": true,
+                "choices": ["male", "female", "other"],
+                "assigned": "None"
+            },
+            "maritalstatus": {
+                "description": "Marital status of the employee  [single, married, divorced, widowed]",
+                "datatype": "choices",
+                "required": true,
+                "choices": ["single", "married", "divorced", "widowed"],
+                "assigned": "None"
+            }
+        }
+    },
+    "get personal detail": {
+        "project": "get personal detail",
+        "project description": "Retrieve personal record by employee ID.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/personal/{employee_id}",
+        "method": "GET",
+        "payload": {
+            "employee_id": {
+                "description": "Employee ID to retrieve personal details",
+                "datatype": "regex",
+                "format": "^cds\\d{4}$",
+                "required": true,
+                "assigned": "None"
+            }
+        }
+    },
+    "update personal detail": {
+        "project": "update personal detail",
+        "project description": "Update personal record with new details.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/employees/{employee_id}",
+        "method": "PUT",
+        "payload": {
+            "employee_id": {
+                "description": "Employee ID of the employee",
+                "datatype": "regex",
+                "format": "^cds\\d{4}$",
+                "required": true,
+                "assigned": "None"
+            },
+            "firstname": {
+                "description": "First name of the employee",
+                "datatype": "string",
+                "required": false,
+                "assigned": "None"
+            },
+            "lastname": {
+                "description": "Last name of the employee",
+                "datatype": "string",
+                "required": false,
+                "assigned": "None"
+            },
+            "dateofbirth": {
+                "description": "Date of birth of the employee in YYYY-MM-DD format",
+                "datatype": "date",
+                "format": "%Y-%m-%d",
+                "required": false,
+                "assigned": "None"
+            },
+            "contactnumber": {
+                "description": "Contact number of the employee",
+                "datatype": "mobile",
+                "required": false,
+                "assigned": "None"
+            },
+            "emailaddress": {
+                "description": "Email address of the employee",
+                "datatype": "regex",
+                "format": "^[a-z0-9]+@[a-z0-9]+\\.com$",
+                "required": false,
+                "assigned": "None"
+            },
+            "address": {
+                "description": "Residential address of the employee",
+                "datatype": "string",
+                "required": false,
+                "assigned": "None"
+            },
+            "nationality": {
+                "description": "Nationality of the employee",
+                "datatype": "string",
+                "required": false,
+                "assigned": "None"
+            },
+            "gender": {
+                "description": "Gender of the employee  [male, female, other]",
+                "datatype": "choices",
+                "required": false,
+                "choices": ["male", "female", "other"],
+                "assigned": "None"
+            },
+            "maritalstatus": {
+                "description": "Marital status of the employee  [single, married, divorced, widowed]",
+                "datatype": "choices",
+                "required": false,
+                "choices": ["single", "married", "divorced", "widowed"],
+                "assigned": "None"
+            }
+        }
+    },
+    "get employee detail": {
+        "project": "get employee detail",
+        "project description": "Retrieve employee record by employee ID.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/employees/{employee_id}",
+        "method": "GET",
+        "payload": {
+            "employee_id": {
+                "description": "Employee ID to retrieve or get employment records",
+                "datatype": "regex",
+                "format": "^cds\\d{4}$",
+                "required": true,
+                "assigned": "None"
+            }
+        }
+    },
+    "delete employee detail": {
+        "project": "delete employee detail",
+        "project description": "Delete employee record by employee ID.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/employees/{employee_id}",
+        "method": "DELETE",
+        "payload": {
+            "employee_id": {
+                "description": "Employee ID to delete or remove employment records",
+                "datatype": "regex",
+                "format": "^cds\\d{4}$",
+                "required": true,
+                "assigned": "None"
+            }
+        }
+    },
+    "update employee detail": {
+        "project": "update employee detail",
+        "project description": "Update employee or employment details with new information.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/employees/update/admin",
+        "method": "PUT",
+        "payload": {
+            "employment_id": {
+                "description": "Employee ID for update employement detail",
+                "datatype": "regex",
+                "format": "^cds\\d{4}$",
+                "required": true,
+                "assigned": "None"
+            },
+            "job_position": {
+                "description": "Job position of the employee",
+                "datatype": "string",
+                "required": false,
+                "assigned": "None"
+            },
+            "department": {
+                "description": "Department of the employee",
+                "datatype": "string",
+                "required": false,
+                "assigned": "None"
+            },
+            "start_date": {
+                "description": "Start date of the employee in YYYY-MM-DD format",
+                "datatype": "date",
+                "format": "%Y-%m-%d",
+                "required": false,
+                "assigned": "None"
+            },
+            "employment_type": {
+                "description": "Type of employment [fulltime, parttime]",
+                "datatype": "choices",
+                "required": false,
+                "choices": ["fulltime", "parttime"],
+                "assigned": "None"
+            },
+            "reporting_manager": {
+                "description": "Reporting manager of the employee",
+                "datatype": "regex",
+                "format": "^cds\\d{4}$",
+                "required": false,
+                "assigned": "None"
+            },
+            "work_location": {
+                "description": "Work location of the employee",
+                "datatype": "string",
+                "required": false,
+                "assigned": "None"
+            },
+            "employee_email": {
+                "description": "Email address of the employee",
+                "datatype": "regex",
+                "format": "^[a-z0-9]+@[a-z0-9]+\\.com$",
+                "required": false,
+                "assigned": "None"
+            },
+            "basic_salary": {
+                "description": "Basic salary of the employee",
+                "datatype": "integer",
+                "required": false,
+                "assigned": "None"
+            }
+        }
+    },
+    "create new role": {
+        "project": "create new role",
+        "project description": "Create a new role.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/roles",
+        "method": "POST",
+        "payload": {
+            "name": {
+                "description": "Name of the new role",
+                "datatype": "string",
+                "required": true,
+                "assigned": "None"
+            },
+            "sick_leave": {
+                "description": "number of sick leave",
+                "datatype": "integer",
+                "required": true,
+                "assigned": "None"
+            },
+            "personal_leave": {
+                "description": "number of personal leave",
+                "datatype": "integer",
+                "required": true,
+                "assigned": "None"
+            },
+            "vacation_leave": {
+                "description": "number of vacation leave",
+                "datatype": "integer",
+                "required": true,
+                "assigned": "None"
+            }
+        }
+    },
+    "delete role": {
+        "project": "delete role",
+        "project description": "Delete role by role ID.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/roles/{role_id}",
+        "method": "DELETE",
+        "payload": {
+            "role_id": {
+                "description": "Role ID to delete the role",
+                "datatype": "integer",
+                "required": true,
+                "assigned": "None"
+            }
+        }
+    },
+    "update role": {
+        "project": "update role",
+        "project description": "Update an role.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/roles/",
+        "method": "PUT",
+        "payload": {
+            "role_id": {
+                "description": "Role Id",
+                "datatype": "integer",
+                "required": true,
+                "assigned": "None"
+            },
+            "new_name": {
+                "description": "New role name",
+                "datatype": "string",
+                "required": false,
+                "assigned": "None"
+            },
+            "sick_leave": {
+                "description": "number of sick leave",
+                "datatype": "integer",
+                "required": false,
+                "assigned": "None"
+            },
+            "personal_leave": {
+                "description": "number of personal leave",
+                "datatype": "integer",
+                "required": false,
+                "assigned": "None"
+            },
+            "vacation_leave": {
+                "description": "number of vacation leave",
+                "datatype": "integer",
+                "required": false,
+                "assigned": "None"
+            }
+            
+        }
+    },
+    "get role": {
+        "project": "get role",
+        "project description": "Retrieve role details by role ID.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/roles/",
+        "method": "GET",
+        "payload": {
+        }
+    },
+    "assign role to employee": {
+        "project": "assign role to employee",
+        "project description": "Assign a role to an employee.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/roles/employee/role",
+        "method": "POST",
+        "payload": {
+            "employee_id": {
+                "description": "Employee ID to assign role",
+                "datatype": "regex",
+                "format": "^cds\\d{4}$",
+                "required": true,
+                "assigned": "None"
+            },
+            "role_id": {
+                "description": "Role ID to assign",
+                "datatype": "integer",
+                "required": true,
+                "assigned": "None"
+            }
+        }
+    },
+    "create role function": {
+        "project": "create role function",
+        "project description": "Create a new role based  work or function with provided details.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/roles/functions/",
+        "method": "POST",
+        "payload": {
+            "role_id": {
+                "description": "Role ID for creating function",
+                "datatype": "integer",
+                "required": true,
+                "assigned": "None"
+            },
+            "function": {
+                "description": "New Function allocated to role",
+                "datatype": "string",
+                "required": true,
+                "assigned": "None"
+            },
+            "jsonfile": {
+                "description": "JSON file name (ex.admin.json)",
+                "datatype": "string",
+                "required": true,
+                "assigned": "None"
+            }
+        }
+    },
+    "update role function": {
+        "project": "update role function",
+        "project description": "Update  a new role based  work or function id .",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/roles/function/",
+        "method": "PUT",
+        "payload": {
+            "function_id": {
+                "description": "Function ID for Update function",
+                "datatype": "integer",
+                "required": true,
+                "assigned": "None"
+            },
+            "function": {
+                "description": "update function description for role",
+                "datatype": "string",
+                "required": false,
+                "assigned": "None"
+            },
+            "jsonfile": {
+                "description": "JSON file name (ex.admin.json)",
+                "datatype": "string",
+                "required": false,
+                "assigned": "None"
+            }
+        }
+    },
+    "get role function": {
+        "project": "get role function",
+        "project description": "Retrieve functions associated with a role by role ID.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/roles/{role_id}/functions/",
+        "method": "GET",
+        "payload": {
+            "role_id": {
+                "description": "Role ID to retrieve functions",
+                "datatype": "integer",
+                "required": true,
+                "assigned": "None"
+            }
+        }
+    },
+    "delete role function": {
+        "project": "delete role function",
+        "project description": "Delete a role function by function ID.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/roles/functions/{id}",
+        "method": "DELETE",
+        "payload": {
+            "id": {
+                "description": "Function ID  to delete",
+                "datatype": "integer",
+                "required": true,
+                "assigned": "None"
+            }
+        }
+    },
+    "create new leave": {
+        "project": "create new leave",
+        "project description": "Create or apply a new leave record or request with provided details.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/leave/",
+        "method": "POST",
+        "payload": {
+            "leave_type": {
+                "description": "Type of leave ",
+                "datatype": "choices",
+                "required": true,
+                "choices":["sick","personal","vacation","unpaid"],
+                "assigned": "None"
+            },
+            "duration": {
+                "description": "Duration of the leave ",
+                "datatype": "choices",
+                "choices": ["oneday", "halfday"],
+                "required": true,
+                "assigned": "None"
+            },
+            "start_date": {
+                "description": "Start date of the leave in YYYY-MM-DD format",
+                "datatype": "date",
+                "format": "%Y-%m-%d",
+                "required": true,
+                "assigned": "None"
+            },
+            "total_days": {
+                "description": "Total number of leave days",
+                "datatype": "integer",
+                "required": true,
+                "assigned": "None"
+            },
+            "reason": {
+                "description": "Reason for the leave",
+                "datatype": "string",
+                "required": true,
+                "assigned": "None"
+            }
+        }
+    },
+    "get pending leaves": {
+        "project": "get pending leaves",
+        "project description": "Retrieve pending leave records.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/pending/leave/{employee_id}",
+        "method": "GET",
+        "payload": {
+            "employee_id": {
+                "description": "Employee ID to retrieve pending leave records",
+                "datatype": "regex",
+                "format": "^cds\\d{4}$",
+                "required": true,
+                "assigned": "None"
+            }
+        }
+    },
+    "get leave history": {
+        "project": "get leave history",
+        "project description": "Retrieve records of leave history for a specific month and year.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/{monthnumber}/{yearnumber}/{employee_id}",
+        "method": "GET",
+        "payload": {
+            "employee_id": {
+                "description": "Employee ID  to retrieve leave records of the employee",
+                "datatype": "regex",
+                "format": "^cds\\d{4}$",
+                "required": true,
+                "assigned": "None"
+            },
+            "monthnumber": {
+                "description": "Month number of the leave records to retrieve (1-12)",
+                "datatype": "choices",  
+                "required": true,
+                "choices":["1","2","3","4","5","6","7","8","9","10","11","12"],
+                "assigned": "None"
+            },
+            "yearnumber": {
+                "description": "Year of the leave records to retrieve (4-digit year)",
+                "datatype": "regex",
+                "format": "^20\\d{2}$",  
+                "required": true,
+                "assigned": "None"
+            }
+        }
+    },
+    "delete leave record": {
+        "project": "delete leave record",
+        "project description": "Delete a leave record by leave ID.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/{leave_id}",
+        "method": "DELETE",
+        "payload": {
+            "leave_id": {
+                "description": "leave ID  to delete leave record",
+                "datatype": "integer",
+                "required": true,
+                "assigned": "None"
+            }
+        }
+    },
+    "update leave status": {
+        "project": "update leave status",
+        "project description": "Update an existing leave record by approving or cancelling.",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/leave/admin/teamlead/update",
+        "method": "PUT",
+        "payload": {
+            "leave_id": {
+                "description": "Leave ID to update leave record",
+                "datatype": "integer",
+                "required": true,
+                "assigned": "None"
+            },
+            "status": {
+                "description": "Status of the leave record ['approved', 'rejected'] ",
+                "datatype": "choices",
+                "choices": ["pending", "approved", "rejected"],
+                "required": false,
+                "assigned": "None"
+            },
+            "reason": {
+                "description": "Reason for updating the leave record",
+                "datatype": "string",
+                "required": false,
+                "assigned": "None"
+            }
+        }
+    },
+    "create leave calender": {
+        "project": "create leave calender",
+        "project description": "create a new leave calender for employees",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/calender",
+        "method": "POST",
+        "payload": {}
+    },
+    "get leave calender": {
+        "project": "get leave calender",
+        "project description": "get a leave calender for employees",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/calender/{employee_id}",
+        "method": "GET",
+        "payload": {"employee_id": {
+                "description": "Employee ID to retrieve or get employment records",
+                "datatype": "regex",
+                "format": "^cds\\d{4}$",
+                "required": true,
+                "assigned": "None"
+            }
+        }
+    },
+    "update leave calender": {
+        "project": "update leave calender",
+        "project description": "update a leave calender for employee",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/admin/update/leave/calender/",
+        "method": "PUT",
+        "payload": {
+            "employee_id": {
+                "description": "Employee ID to retrieve or get employment records",
+                "datatype": "regex",
+                "format": "^cds\\d{4}$",
+                "required": true,
+                "assigned": "None"
+            },
+            "sick_leave": {
+                "description": "number of sick leave",
+                "datatype": "integer",
+                "required": false,
+                "assigned": "None"
+            },
+            "personal_leave": {
+                "description": "number of personal leave",
+                "datatype": "integer",
+                "required": false,
+                "assigned": "None"
+            },
+            "vacation_leave": {
+                "description": "number of vacation leave",
+                "datatype": "integer",
+                "required": false,
+                "assigned": "None"
+            }
+            
+        }
+    },
+    "update password": {
+        "project": "update password",
+        "project description": "update a employee email password",
+        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/auth/change-password",
+        "method": "PUT",
+        "payload": {
+            "current_password": {
+                "description": "current email password",
+                "datatype": "string",
+                "required": true,
+                "assigned": "None"
+            },
+            "new_password": {
+                "description": "new email password",
+                "datatype": "string",
+                "required": true,
+                "assigned": "None"
+            },
+            "confirm_password": {
+                "description": "confirm new email password",
+                "datatype": "string",
+                "required": true,
+                "assigned": "None"
+            }
+            
+        }
+    }
+    
+}
