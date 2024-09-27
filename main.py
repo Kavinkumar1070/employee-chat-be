@@ -28,8 +28,6 @@ app.add_middleware(
 )
 
 # Mount the static and template directories
-app.mount("/static", StaticFiles(directory="static"), name="static")
-app.mount("/templates", StaticFiles(directory="templates"), name="templates")
 
 # URL for your Heroku-deployed frontend
 FRONTEND_URL = "https://employee-chat-fe-dev-43e1f5279cb7.herokuapp.com/"
