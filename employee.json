@@ -2,7 +2,7 @@
     "update personal detail": {
         "project": "update personal detail",
         "project description": "Update an existing personal record with provided details.",
-        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/personal/employees",
+        "url": "https://converse-chatbot-be-dev-951891e59e91.herokuapp.com/personal/employees",
         "method": "PUT",
         "payload": {
             "firstname": {
@@ -68,14 +68,14 @@
     "Read employee detail": {
         "project": "Read employee detail",
         "project description": "Retrieve employee details.",
-        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/employee/employees/reademployee",
+        "url": "https://converse-chatbot-be-dev-951891e59e91.herokuapp.com/employee/employees/reademployee",
         "method": "GET",
         "payload": {}
     },
     "apply new leave": {
         "project": "apply new leave",
         "project description": "Apply for new leave request.",
-        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/leave/",
+        "url": "https://converse-chatbot-be-dev-951891e59e91.herokuapp.com/leave/",
         "method": "POST",
         "payload": {
             "leave_type": {
@@ -116,21 +116,21 @@
     "get leave details": {
         "project": "get leave details",
         "project description": "Retrieve leave details.",
-        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/leave/details",
+        "url": "https://converse-chatbot-be-dev-951891e59e91.herokuapp.com/leave/details",
         "method": "GET",
         "payload": {}
     },
     "get pending leaves": {
         "project": "get pending leaves",
         "project description": "Retrieve pending leaves.",
-        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/leave/pending/leave",
+        "url": "https://converse-chatbot-be-dev-951891e59e91.herokuapp.com/leave/pending/leave",
         "method": "GET",
         "payload": {}
     },
     "get leave history": {
         "project": "get leave history",
         "project description": "Retrieve leave records by month and year.",
-        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/leave/{monthnumber}/{yearnumber}",
+        "url": "https://converse-chatbot-be-dev-951891e59e91.herokuapp.com/leave/{monthnumber}/{yearnumber}",
         "method": "GET",
         "payload": {
             "monthnumber": {
@@ -152,7 +152,7 @@
     "delete leave record": {
         "project": "delete leave record",
         "project description": "Delete a leave record by ID.",
-        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/leave/{leave_id}",
+        "url": "https://converse-chatbot-be-dev-951891e59e91.herokuapp.com/leave/{leave_id}",
         "method": "DELETE",
         "payload": {
             "leave_id": {
@@ -166,14 +166,14 @@
     "get leave calender": {
         "project": "get leave calender",
         "project description": "get a leave calender for employees",
-        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/leave/calender",
+        "url": "https://converse-chatbot-be-dev-951891e59e91.herokuapp.com/leave/calender",
         "method": "GET",
         "payload":{}
     },
     "update password": {
         "project": "update password",
         "project description": "update a employee email password",
-        "url": "https://converse-chatbot-be-stag-144abda44aef.herokuapp.com/auth/change-password",
+        "url": "https://converse-chatbot-be-dev-951891e59e91.herokuapp.com/auth/change-password",
         "method": "PUT",
         "payload": {
             "current_password": {

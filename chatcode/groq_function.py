@@ -95,11 +95,6 @@ async def get_project_details(websocket: WebSocket, query: str, jsonfile: str, a
             return await get_project_details(websocket, query, jsonfile, apikey, model)
         return query, project_name
 
-    except client.exceptions.GroqAPIError as groq_error:
-        print(f"Groq API error: {groq_error}")
-        await websocket.send_text("Error: Failed to process the response from Groq API.")
-        return "query", "Groq API error"
-
     except Exception as e:
         print(f"Error while processing the response: {e}")
         await websocket.send_text(e)
@@ -157,10 +152,6 @@ async def fill_payload_values(websocket: WebSocket, query: str, payload_details:
                 "Error: Failed to decode JSON from the response on fill_payload_values.")
             await websocket.send_text("Error: Failed to decode JSON from the response on fill_payload_values.")
 
-    except client.exceptions.GroqAPIError as groq_error:
-        print(f"Groq API error: {groq_error}")
-        await websocket.send_text("Error: Failed to process the response from Groq API.")
-        return "Groq API error"
 
     except Exception as e:
         logger.error(
@@ -194,10 +185,6 @@ async def nlp_response(websocket: WebSocket, answer, payload, apikey, model):
         response_text = response.choices[0].message.content.strip()
         return response_text
 
-    except client.exceptions.GroqAPIError as groq_error:
-        print(f"Groq API error: {groq_error}")
-        await websocket.send_text("Error: Failed to process the response from Groq API.")
-        return "Groq API error"
 
     except Exception as e:
         logging.error(f"Error during API call: {e}")
