@@ -345,7 +345,7 @@ async def update_process_with_user_input(websocket: WebSocket, project_details: 
 
                 choices_list = ",".join(available_field)
                 print(choices_list)
-                choices_list = choices_list + ",All"
+                choices_list =  "All ,"  + choices_list 
                 print(choices_list)
                 message = 'Select "All" or pick a field from the available choices below'
                 await websocket.send_text(f"{message}.Fields:{choices_list} ")
