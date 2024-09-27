@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 async def onboard_personal_details(websocket: WebSocket, details: dict):
-    url = 'http://127.0.0.1:8000/personal/employees'
+    url = 'https://converse-chatbot-be-dev-951891e59e91.herokuapp.com/personal/employees'
     print(details)
     print(type(details))
     payload = details
