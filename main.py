@@ -28,7 +28,7 @@ app.add_middleware(
 )
 
 # Serve static files from the "frontend_project" directory
-app.mount("/static", StaticFiles(directory="https://employee-chat-fe-dev-43e1f5279cb7.herokuapp.com/static/"), name="static")
+app.mount("/static", StaticFiles(directory="https://employee-chat-fe-dev-43e1f5279cb7.herokuapp.com/static/loginstyle.css"), name="static")
 
 # URL to fetch the HTML from
 FRONTEND_URL = "https://employee-chat-fe-dev-43e1f5279cb7.herokuapp.com"  # Replace with your actual URL
