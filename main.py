@@ -27,10 +27,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount the static and template directories
+# Serve static files from the "frontend_project" directory
+app.mount("/static", StaticFiles(directory="https://employee-chat-fe-dev-43e1f5279cb7.herokuapp.com/static/"), name="static")
 
-# URL for your Heroku-deployed frontend
-FRONTEND_URL = "https://employee-chat-fe-dev-43e1f5279cb7.herokuapp.com/"
+# URL to fetch the HTML from
+FRONTEND_URL = "https://employee-chat-fe-dev-43e1f5279cb7.herokuapp.com"  # Replace with your actual URL
 
 @app.get("/")
 async def get():
