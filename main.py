@@ -28,18 +28,25 @@ app.add_middleware(
 )
 
 # Serve static files from the "frontend_project" directory
-app.mount("/static", StaticFiles(directory="https://employee-chat-fe-dev-43e1f5279cb7.herokuapp.com/static/loginstyle.css"), name="static")
 
 # URL to fetch the HTML from
 FRONTEND_URL = "https://employee-chat-fe-dev-43e1f5279cb7.herokuapp.com"  # Replace with your actual URL
 
 @app.get("/")
-async def get():
+async def serve_frontend():
     async with httpx.AsyncClient() as client:
         response = await client.get(FRONTEND_URL)
         if response.status_code != 200:
-            return HTMLResponse("File not found", status_code=404)
-        return HTMLResponse(response.text)
+            raise HTTPException(status_code=404, detail="Frontend not found")
+        
+        # Modify the response content to ensure that CSS and JS point to the correct URLs
+        html_content = response.text
+        # This assumes your CSS and JS are served from the same Heroku URL
+        html_content = html_content.replace('href="/static/', f'href="{FRONTEND_URL}/static/')
+        html_content = html_content.replace('src="/static/', f'src="{FRONTEND_URL}/static/')
+        
+        return HTMLResponse(content=html_content)
+ 
 
 
 # Configure logging
