@@ -29,12 +29,12 @@ app.add_middleware(
 
 
 
-# Correct the path to the static folder
-static_dir = os.path.join(os.path.dirname(__file__), "employee-chat-fe/static")
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
-# URL to fetch the HTML from (update as needed)
-FRONTEND_URL = "https://employee-chat-fe-dev-43e1f5279cb7.herokuapp.com/"
+# Serve static files from the "frontend_project" directory
+app.mount("/static", StaticFiles(directory="https://employee-chat-fe-dev-43e1f5279cb7.herokuapp.com/static"), name="static")
+
+# URL to fetch the HTML from
+FRONTEND_URL = "https://employee-chat-fe-dev-43e1f5279cb7.herokuapp.com/"  # Replace with your actual URL
 
 @app.get("/")
 async def get():
