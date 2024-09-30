@@ -73,11 +73,32 @@ async def get_project_details(websocket: WebSocket, query: str, projectinfo: dic
             query = user_input_data.get("message")
             return await get_project_details(websocket, query, projectinfo, apikey, model)
         return query, project_name
-
+    
     except Exception as e:
-        print(f"Error while processing the response: {e}")
-        await websocket.send_text(e)
-        await websocket.send_text("Error: Failed to process the response on get project detail.")
+        error_str = str(e)
+        if "Error code:" in error_str:
+            await websocket.send_text("Groq Error :", e)
+            status_code = error_str.split("Error code:")[1].split(" - ")[0].strip()
+            try:
+                # error_message = e.response.json() if hasattr(e, 'response') else {}
+                # error_msg = error_message.get('error', {}).get('message', 'Unknown error message')
+                # error_code = error_message.get('error', {}).get('code', 'Unknown code')
+                # print(f"Status Code: {status_code}")
+                # print(f"Error Code: {error_code}")
+                # print(f"Error Message: {error_msg}")
+    
+                # Classify errors based on status code
+                if status_code in ['400','404', '422', '429']:
+                    await websocket.send_text("Client Error,too many request try with different api or model")
+                elif status_code ==  "401":
+                    await websocket.send_text("invalid api key. check api key")
+                elif int(status_code) >= 500:
+                    await websocket.send_text("Server Error, try again after sometime")
+            except Exception as inner_e:
+                await websocket.send_text(f"Failed to parse error response: {inner_e}")
+        else:
+            await websocket.send_text("An unknown error occurred :",e)
+        
 
 
 async def fill_payload_values(websocket: WebSocket, query: str, payload_details: dict, jsonfile, apikey, model) -> Dict[str, Any]:
@@ -133,10 +154,22 @@ async def fill_payload_values(websocket: WebSocket, query: str, payload_details:
 
 
     except Exception as e:
-        logger.error(
-            f"Error while processing the response on fill_payload_values: {e}")
-        await websocket.send_text(e)
-        await websocket.send_text("Error while processing the response on fill_payload_values")
+        error_str = str(e)
+        if "Error code:" in error_str:
+            await websocket.send_text("Groq Error :", e)
+            status_code = error_str.split("Error code:")[1].split(" - ")[0].strip()
+            try:
+                # Classify errors based on status code
+                if status_code in ['400','404', '422', '429']:
+                    await websocket.send_text("Client Error,too many request try with different api or model")
+                elif status_code ==  "401":
+                    await websocket.send_text("invalid api key. check api key")
+                elif int(status_code) >= 500:
+                    await websocket.send_text("Server Error, try again after sometime")
+            except Exception as inner_e:
+                await websocket.send_text(f"Failed to parse error response: {inner_e}")
+        else:
+            await websocket.send_text("An unknown error occurred :",e)
 
 
 async def nlp_response(websocket: WebSocket, answer, payload, apikey, model):
@@ -166,5 +199,19 @@ async def nlp_response(websocket: WebSocket, answer, payload, apikey, model):
 
 
     except Exception as e:
-        logging.error(f"Error during API call: {e}")
-        await websocket.send_text(f"Error occurred in nlp_response: {e}")
+        error_str = str(e)
+        if "Error code:" in error_str:
+            await websocket.send_text("Groq Error :", e)
+            status_code = error_str.split("Error code:")[1].split(" - ")[0].strip()
+            try:
+                # Classify errors based on status code
+                if status_code in ['400','404', '422', '429']:
+                    await websocket.send_text("Client Error,too many request try with different api or model")
+                elif status_code ==  "401":
+                    await websocket.send_text("invalid api key. check api key")
+                elif int(status_code) >= 500:
+                    await websocket.send_text("Server Error, try again after sometime")
+            except Exception as inner_e:
+                await websocket.send_text(f"Failed to parse error response: {inner_e}")
+        else:
+            await websocket.send_text("An unknown error occurred :",e)
