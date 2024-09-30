@@ -18,29 +18,8 @@ logger.setLevel(logging.INFO)
 
 load_dotenv()
 
+async def get_project_details(websocket: WebSocket, query: str, projectinfo: dict,apikey,model):
 
-def project_available_check(project_name, projectinfo):
-    if project_name not in projectinfo.keys():
-        return None
-    else:
-        return project_name
-
-
-async def get_project_details(websocket: WebSocket, query: str, jsonfile: str, apikey, model):
-    projectinfo = {}
-    try:
-        with open(jsonfile, 'r') as f:
-            json_config = json.load(f)
-            project_names = json_config.keys()
-            for i in project_names:
-                if 'project description' in json_config[i]:
-                    projectinfo[i] = json_config[i]['project description']
-                else:
-                    logging.warning(
-                        f"Warning: 'project description' missing for {i}")
-    except Exception as e:
-        print(f"Error while processing the get project details: {e}")
-        await websocket.send_text("Error while processing the get project details : project info")
 
     client = Groq(api_key=os.getenv(apikey))
     try:
@@ -92,7 +71,7 @@ async def get_project_details(websocket: WebSocket, query: str, jsonfile: str, a
             user_input = await websocket.receive_text()
             user_input_data = json.loads(user_input)
             query = user_input_data.get("message")
-            return await get_project_details(websocket, query, jsonfile, apikey, model)
+            return await get_project_details(websocket, query, projectinfo, apikey, model)
         return query, project_name
 
     except Exception as e:

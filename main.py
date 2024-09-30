@@ -130,7 +130,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 
                 # Main logic
                 jsonfile = choose_json(role)
-                response = await get_project_details(websocket, user_message, jsonfile, apikey, model)
+                projectinfo = load_project_info(jsonfile)
+                response = await get_project_details(websocket, user_message, projectinfo,apikey,model)
                 query = response[0]
                 project_name = response[1]
                 print('________________________________________________________________________________________')
