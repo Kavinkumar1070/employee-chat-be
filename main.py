@@ -46,8 +46,6 @@ async def serve_frontend():
         html_content = html_content.replace('src="/static/', f'src="{FRONTEND_URL}/static/')
         
         return HTMLResponse(content=html_content)
- 
-
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -120,6 +118,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 role = data_json.get("role")
                 apikey = data_json.get('apikey')
                 model = data_json.get('model')
+                
+                
 
                 # Check for 'quit' message
                 if user_message.lower() == 'quit':
@@ -132,17 +132,28 @@ async def websocket_endpoint(websocket: WebSocket):
                 jsonfile = choose_json(role)
                 projectinfo = load_project_info(jsonfile)
                 response = await get_project_details(websocket, user_message, projectinfo,apikey,model)
+                print('asdfvasdf',response)
+                if response is None:
+                    print('asdf')
+                    await asyncio.sleep(4)
+                    continue
                 query = response[0]
                 project_name = response[1]
+                print('Query amd Project name') 
+                print(query)
+                print(project_name)
+                try:
+                    if int(query) >= 500 and project_name is None:
+                        print('asdasdf')
+                        await asyncio.sleep(4)
+                        await websocket.send_text('navigateerror')
+                        break
+                except ValueError:
+                    print("Query is not a number, skipping numeric check. Proceeding to the next step.")
                 print('________________________________________________________________________________________')
                 print('Query amd Project name') 
                 print(query)
                 print(project_name)
-                if isinstance(project_name, str) and project_name == "Groq API error":
-                        await websocket.send_text("Error: Failed to process the response from Groq API.")
-                        await asyncio.sleep(3)
-                        await websocket.send_text('navigateerror')
-                        continue
                 print('________________________________________________________________________________________')
                 project_details = get_project_script(project_name, jsonfile)
                 print('________________________________________________________________________________________')
@@ -157,14 +168,22 @@ async def websocket_endpoint(websocket: WebSocket):
                 if payload_details != {}:
                     print('________________________________________________________________________________________')
                     print('Payload Detail is Not Empty')
-                    print("123",model)
                     filled_cleaned = await fill_payload_values(websocket, query, payload_details,jsonfile, apikey, model)
                     # Check if response indicates a Groq API error
-                    if isinstance(filled_cleaned, str) and filled_cleaned == "Groq API error":
-                        await websocket.send_text("Error: Failed to process the response from Groq API.")
-                        await asyncio.sleep(3)
-                        await websocket.send_text('navigateerror')
+                    print("filled_cleaned",filled_cleaned)
+                    if isinstance(filled_cleaned, dict):
+                        print('filled_cleaned is a dictionary, proceeding with dictionary processing')
+                    elif filled_cleaned is None:
+                        await asyncio.sleep(4)
                         continue
+                    else:
+                        try:
+                            if int(filled_cleaned) >= 500 :
+                                await asyncio.sleep(4)
+                                await websocket.send_text('navigateerror')
+                                break
+                        except ValueError:
+                            print("filled_cleaned is not a number, skipping numeric check. Proceeding to the next step.")
                 else:
                     print('________________________________________________________________________________________')
                     print('Payload Detail is Empty')
@@ -208,11 +227,30 @@ async def websocket_endpoint(websocket: WebSocket):
                         await websocket.send_text(f"{result}. Sorry for inconvenience, try after sometime.")
                         continue
                     else:
-                        model_output = await nlp_response(websocket, result, payload, apikey, model)
-                        await websocket.send_text(f"{model_output}. Glad to help! If you need more assistance, I'm just a message away.")
-                        continue
-
-                
+                        print('@@@@@@@@@@@@@@@@@@@')
+                        model_output = await nlp_response(websocket, result, payload,apikey, model)
+                        print(model_output)
+                        print('@@@@@@@@@@@@@@@@@@@')
+                        
+                        if model_output is None:
+                            print('111')
+                            await asyncio.sleep(4)
+                            continue
+                        try:
+                            if int(model_output) >= 500:
+                                print('model_output is an error code >= 500')
+                                await asyncio.sleep(4)
+                                await websocket.send_text('navigateerror')
+                                break
+                            else:
+                                print('model_output is a valid number and not an error code')
+                                await websocket.send_text(f"{model_output}. Glad to help! If you need more assistance, I'm just a message away.")
+                                continue
+                        except ValueError:
+                            # If model_output is not a number (e.g., string, dict), handle it accordingly
+                            print("model_output is not a number, skipping numeric check.")
+                            await websocket.send_text(f"{model_output}. Glad to help! If you need more assistance, I'm just a message away.")
+                            continue
                 elif result and  not payload:
                     
                     if isinstance(result, str):
@@ -249,5 +287,3 @@ async def websocket_endpoint(websocket: WebSocket):
         await asyncio.sleep(3)
     finally:
         await websocket.close()
-
-
