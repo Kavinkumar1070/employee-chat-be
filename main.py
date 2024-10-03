@@ -60,7 +60,6 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_text()
             data_json = json.loads(data)
             user_message = data_json.get("message", "").strip().lower()            
-            print(f"Received message: '{user_message}'")  # Debugging: Log the received message
 
             if user_message == 'quit':
                 await websocket.send_text("Please wait,You will be Navigated to Login Screen")  # Redirect to the new page
@@ -73,11 +72,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 details = await collect_user_input(websocket, file, validate_input)
                 details['dateofbirth'] = datetime.strptime(details['dateofbirth'], '%Y-%m-%d').strftime('%Y-%m-%d')
                 details['contactnumber'] = int(details['contactnumber'])
-                print('*****************************')
-                print(details)
-                print('*****************************')
                 response = await onboard_personal_details(websocket,details)
-                print(response)
                 if response != "Email Send Successfully":
                     await websocket.send_text(response)
                     await websocket.send_text("You will be Navigated to Login Screen")  # Redirect to the new page
@@ -109,9 +104,6 @@ async def websocket_endpoint(websocket: WebSocket):
                 # Receiving data
                 data = await websocket.receive_text()
                 data_json = json.loads(data)
-                print('________________________________________________________________________________________')
-                print("data json :", data_json)
-                print('________________________________________________________________________________________')
 
                 token = data_json.get("token")
                 user_message = data_json.get("message")
@@ -132,45 +124,23 @@ async def websocket_endpoint(websocket: WebSocket):
                 jsonfile = choose_json(role)
                 projectinfo = load_project_info(jsonfile)
                 response = await get_project_details(websocket, user_message, projectinfo,apikey,model)
-                print('asdfvasdf',response)
                 if response is None:
-                    print('asdf')
                     await asyncio.sleep(4)
                     continue
                 query = response[0]
                 project_name = response[1]
-                print('Query amd Project name') 
-                print(query)
-                print(project_name)
                 try:
                     if int(query) >= 500 and project_name is None:
-                        print('asdasdf')
                         await asyncio.sleep(4)
                         await websocket.send_text('navigateerror')
                         break
                 except ValueError:
                     print("Query is not a number, skipping numeric check. Proceeding to the next step.")
-                print('________________________________________________________________________________________')
-                print('Query amd Project name') 
-                print(query)
-                print(project_name)
-                print('________________________________________________________________________________________')
                 project_details = get_project_script(project_name, jsonfile)
-                print('________________________________________________________________________________________')
-                print('Project Details') 
-                print(project_details)
-                print('________________________________________________________________________________________')
                 payload_details = split_payload_fields(project_details)
-                print('________________________________________________________________________________________')
-                print('Payload Details') 
-                print(payload_details)
-                print('________________________________________________________________________________________')
                 if payload_details != {}:
-                    print('________________________________________________________________________________________')
-                    print('Payload Detail is Not Empty')
                     filled_cleaned = await fill_payload_values(websocket, query, payload_details,jsonfile, apikey, model)
                     # Check if response indicates a Groq API error
-                    print("filled_cleaned",filled_cleaned)
                     if isinstance(filled_cleaned, dict):
                         print('filled_cleaned is a dictionary, proceeding with dictionary processing')
                     elif filled_cleaned is None:
@@ -185,28 +155,19 @@ async def websocket_endpoint(websocket: WebSocket):
                         except ValueError:
                             print("filled_cleaned is not a number, skipping numeric check. Proceeding to the next step.")
                 else:
-                    print('________________________________________________________________________________________')
-                    print('Payload Detail is Empty')
                     filled_cleaned = payload_details
                         
                 
                 validate_payload = validate(project_details, filled_cleaned) 
-                print('Validate Payload') 
-                print(validate_payload)
-                print('________________________________________________________________________________________')
                 
                 # Handling PUT requests
                 if validate_payload['method'] == 'PUT':
                     answer = await update_process(websocket, project_details, validate_payload)
-                    print("---------------------------------------------------------------------------------------------------------------------------")
                     logger.info(f"Answer from update_process: {answer}")
-                    print("---------------------------------------------------------------------------------------------------------------------------")
                 else:
                     # Handling other requests
                     answer = await ask_user(websocket, project_details, validate_payload)
-                    print("---------------------------------------------------------------------------------------------------------------------------")
                     logger.info(f"Answer from ask_user: {answer}")
-                    print("---------------------------------------------------------------------------------------------------------------------------")
                 
                 answer['bearer_token'] = token
 
@@ -214,9 +175,6 @@ async def websocket_endpoint(websocket: WebSocket):
                 
                 # Database operation
                 result,payload = await database_operation(websocket, answer)
-                
-                print('result :',result)
-                print('payload :',payload)
                 
                 if result == "Table" and payload == "Return":
                     await websocket.send_text("Glad to help! If you need more assistance, I'm just a message away.")
@@ -227,28 +185,20 @@ async def websocket_endpoint(websocket: WebSocket):
                         await websocket.send_text(f"{result}. Sorry for inconvenience, try after sometime.")
                         continue
                     else:
-                        print('@@@@@@@@@@@@@@@@@@@')
                         model_output = await nlp_response(websocket, result, payload,apikey, model)
-                        print(model_output)
-                        print('@@@@@@@@@@@@@@@@@@@')
                         
                         if model_output is None:
-                            print('111')
                             await asyncio.sleep(4)
                             continue
                         try:
                             if int(model_output) >= 500:
-                                print('model_output is an error code >= 500')
                                 await asyncio.sleep(4)
                                 await websocket.send_text('navigateerror')
                                 break
                             else:
-                                print('model_output is a valid number and not an error code')
                                 await websocket.send_text(f"{model_output}. Glad to help! If you need more assistance, I'm just a message away.")
                                 continue
                         except ValueError:
-                            # If model_output is not a number (e.g., string, dict), handle it accordingly
-                            print("model_output is not a number, skipping numeric check.")
                             await websocket.send_text(f"{model_output}. Glad to help! If you need more assistance, I'm just a message away.")
                             continue
                 elif result and  not payload:
@@ -270,11 +220,8 @@ async def websocket_endpoint(websocket: WebSocket):
                     await websocket.send_text("Back end server error try again.")
                     await asyncio.sleep(3)
                     continue
-                
-
-                                                    
+                                                                    
             except Exception as e:
-                print('Chat error')
                 await websocket.send_text(f"An error occurred: {str(e)}")
 
 
@@ -282,7 +229,6 @@ async def websocket_endpoint(websocket: WebSocket):
         logger.info("WebSocket disconnected")
         await asyncio.sleep(3)
     except Exception as e:
-        print('out of chat')
         logger.error(f"Unexpected error in WebSocket connection: {str(e)}")
         await asyncio.sleep(3)
     finally:

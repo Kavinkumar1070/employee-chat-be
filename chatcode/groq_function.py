@@ -24,35 +24,38 @@ async def get_project_details(websocket: WebSocket, query: str, projectinfo: dic
         response = client.chat.completions.create(
             model=os.getenv(model),
             messages=[
-                {
-                    "role": "system",
-                    "content": f"""
-                        You are an AI assistant trained to extract project names based on project descriptions. Follow these steps:
-                        
-                        1. Correct any grammatical or spelling errors in the query.
-                        2. Identify and extract keywords and context from the user query: "{query}" to capture the intent.
-                        3. Review the provided project descriptions: {projectinfo}.
-                        4. Analyze the intent and match it with the project names based on the descriptions.
-                        5. If a project name matches the query context, return that project name.
-                        6. If no project name matches or the query is unclear, return 'None'.
-                        7. Return the result in a JSON object with the format shown below.
-                        
-                        Example:
-                        Query: "How do I update my project?"
-                        Project Titles and Descriptions: {projectinfo}
-                        Response:
-                        ~~~
-                        {{
-                            "project": "Project XYZ"
-                        }}
-                        ~~~
-                    Ensure the response is enclosed with `~~~` before and after the JSON output. Do not include any additional explanations.
+        {
+            "role": "system",
+            "content": f"""
+                You are an AI assistant trained to extract project names based on project descriptions. Follow these steps:
+                
+                    1. **Correct any grammatical or spelling errors in the query:** If the query contains any spelling or grammatical mistakes, fix them to ensure clarity.    
+                    2. **Identify and extract keywords and context from the user query:** Review the query provided by the user: "{query}". Try to understand the intent behind the query by focusing on important keywords that indicate actions and any objects mentioned .
+                    3. **Review the provided project titles and descriptions:** Use the list of project titles {projectinfo.keys()} and its descriptions provided in {projectinfo.values()}. These contain the projects available to match the query to. Check each project title and description for relevance to the extracted keywords.
+                    4. **Analyze the intent and match it with the project names:** Based on the keywords extracted in Step 2, check the project titles from Step 3 to find any potential matches. This is to ensure that the project that best aligns with the user's query is selected.
+                    5. **Handle ambiguous or short queries:** 
+                        - If the query consists of a single word (like "get", "update", etc.), treat it as too vague and return `"None"`. 
+                        - If the extracted keywords match **multiple** project titles (i.e., the query could relate to more than one project), return `"None"`. This ensures that you are not making assumptions about the user's intent in such cases.
+                    6. **Return the matching project name if one is found:** If the keywords from the query match a single project name based on the provided descriptions, return that project name.
+                    7. **Handle unclear or no matches:** If no project name matches the query or if the query is unclear, return `"None"` to indicate that no clear match was found.
+                    8. **Return the result in a JSON object:** The final result should be formatted as shown below. Be sure to enclose the response in `~~~` to format it as expected    
+                
+                Example:
+                Query: "How do I update my project?"
+                Project Titles and Descriptions: {projectinfo}
+                Response:
+                ~~~
+                {{
+                    "project": "Project XYZ"
+                }}
+                ~~~
+            Ensure the response is enclosed with `~~~` before and after the JSON output. Do not include any additional explanations.
             """
-                },
-                {
-                    "role": "user",
-                    "content": f"Extract the project name from the following query: {query} and Project Titles and Descriptions: {projectinfo}."
-                }
+        },
+        {
+            "role": "user",
+            "content": f"Extract the project name from the following query: {query} and Project Titles and Descriptions: {projectinfo}."
+        }
             ]
         )
 
