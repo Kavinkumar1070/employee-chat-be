@@ -189,22 +189,23 @@ async def nlp_response(websocket: WebSocket, answer, payload, apikey, model):
         response = client.chat.completions.create(
             model=os.getenv(model),
             messages=[
-                {
-                    "role": "system",
-                    "content": """
-                    You are an AI assistant responsible for explaining technical SQL operation results in simple and user-friendly terms. 
-                    The user has performed a CRUD operation (Create, Read, Update, Delete) using an API that interacts with a database.
-                    
-                    Provide a concise, clear summary of the operation result in **under 40 words**. Include the relevant payload values.
-                    Avoid technical jargon and ensure the explanation is easily understandable by non-technical users.
-                    """
-                },
-                {
-                    "role": "user",
-                    "content": f"The API response is: {answer}. The payload is: {payload}. Please summarize the result in a user-friendly way."
-                }
-            ]
-        )
+            {
+                "role": "system",
+                "content": """
+                You are an AI assistant responsible for explaining technical SQL operation results in simple and user-friendly terms. 
+                The user has performed a CRUD operation (Create, Read, Update, Delete) using an API that interacts with a database.
+
+                Provide a concise, clear summary of the operation result in **under 50 words**. 
+                Start by explaining if the operation was successful or failed. Then explain the relevant payload values. 
+                Avoid technical jargon and ensure the explanation is easily understandable by non-technical users.
+                """
+            },
+            {
+                "role": "user",
+                "content": f"The API response is: {answer}. The payload is: {payload}. Please summarize the result in a user-friendly way, first explaining the result (success/failure) and then the payload."
+            }
+        ]
+    )
         response_text = response.choices[0].message.content.strip()
         
         return response_text
