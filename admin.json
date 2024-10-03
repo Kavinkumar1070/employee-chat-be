@@ -522,8 +522,8 @@
             },
             "yearnumber": {
                 "description": "Year of the leave records to retrieve (4-digit year)",
-                "datatype": "regex",
-                "format": "^20\\d{2}$",  
+                "datatype": "choices",
+                "choices": ["2023","2024","2025"],  
                 "required": true,
                 "assigned": "None"
             }
