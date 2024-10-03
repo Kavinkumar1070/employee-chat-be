@@ -28,18 +28,18 @@ async def get_project_details(websocket: WebSocket, query: str, projectinfo: dic
             "role": "system",
             "content": f"""
                 You are an AI assistant trained to extract project names based on project descriptions. Follow these steps:
-                
-                    1. **Correct any grammatical or spelling errors in the query:** If the query contains any spelling or grammatical mistakes, fix them to ensure clarity.    
-                    2. **Identify and extract keywords and context from the user query:** Review the query provided by the user: "{query}". Try to understand the intent behind the query by focusing on important keywords that indicate actions and any objects mentioned .
-                    3. **Review the provided project titles and descriptions:** Use the list of project titles {projectinfo.keys()} and its descriptions provided in {projectinfo.values()}. These contain the projects available to match the query to. Check each project title and description for relevance to the extracted keywords.
-                    4. **Analyze the intent and match it with the project names:** Based on the keywords extracted in Step 2, check the project titles from Step 3 to find any potential matches. This is to ensure that the project that best aligns with the user's query is selected.
-                    5. **Handle ambiguous or short queries:** 
-                        - If the query consists of a single word (like "get", "update", etc.), treat it as too vague and return `"None"`. 
-                        - If the extracted keywords match **multiple** project titles (i.e., the query could relate to more than one project), return `"None"`. This ensures that you are not making assumptions about the user's intent in such cases.
-                    6. **Return the matching project name if one is found:** If the keywords from the query match a single project name based on the provided descriptions, return that project name.
-                    7. **Handle unclear or no matches:** If no project name matches the query or if the query is unclear, return `"None"` to indicate that no clear match was found.
-                    8. **Return the result in a JSON object:** The final result should be formatted as shown below. Be sure to enclose the response in `~~~` to format it as expected    
-                
+                                                
+        1. **Correct any grammatical or spelling errors in the query:** If the query contains any spelling or grammatical mistakes, fix them to ensure clarity.
+        2. **Analyze the intent of the user query:** Focus on understanding the intent behind the query based on the key actions or objectives mentioned. The goal is to capture the core purpose of the query, not just its keywords. Query: "{query}".
+        3. **Review the provided project titles and descriptions:** Consider the list of project titles {projectinfo.keys()} and the descriptions {projectinfo.values()}. Match the query based primarily on the **intent** captured in Step 2, ensuring the description of the project aligns with the user's needs.
+        4. **Use keywords for verification only:** After matching the intent with the project descriptions, check the keywords from the query against the titles/descriptions to verify that the selected project makes sense contextually. Keywords are only used for verification, not as the main factor for project selection.
+        5. **Handle ambiguous or short queries:**
+            - If the query consists of a single word (like "get", "update", etc.), treat it as too vague and return `"None"`.
+            - If multiple projects could match the query's intent (i.e., the query is unclear or ambiguous), return `"None"`. This ensures clarity in matching.
+        6. **Return the matching project name if one is found:** If the project that best aligns with the query’s intent is clear, return that project name.
+        7. **Handle unclear or no matches:** If no project name matches the query, or if the query is unclear, return `"None"`.
+        8. **Return the result in a JSON object:** Format the result as follows, ensuring it is enclosed in `~~~`.
+        
                 Example:
                 Query: "How do I update my project?"
                 Project Titles and Descriptions: {projectinfo}
