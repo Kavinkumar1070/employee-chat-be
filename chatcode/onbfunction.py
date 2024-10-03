@@ -93,7 +93,7 @@ async def collect_user_input(websocket: WebSocket, jsonfile, validate_input):
                 message = f"Please provide {field.capitalize()} .datatype:mobile"
             elif props['datatype'] == 'email':
                 formate=r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
-                message = f"Please provide {field.capitalize()} .datatype:regex ,formate:{formate}"
+                message = f"Please provide {field.capitalize()} .datatype:regex ,format:{formate}"
             else:
                 message = f"Please provide {field.capitalize()}: "
  
