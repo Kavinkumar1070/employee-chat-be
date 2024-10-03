@@ -218,6 +218,13 @@
             }
         }
     },
+    "get team members": {
+        "project": "get team member",
+        "project description": "get a employees or members details working under an team lead",
+        "url": "https://converse-chatbot-be-dev-951891e59e91.herokuapp.com/leave/teamlead/employee/",
+        "method": "GET",
+        "payload":{}
+    },
     "update password": {
         "project": "update password",
         "project description": "update a employee email password",
