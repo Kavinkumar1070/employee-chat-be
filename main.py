@@ -70,8 +70,6 @@ async def websocket_endpoint(websocket: WebSocket):
             elif user_message == 'onboard':
                 file = get_jsonfile()
                 details = await collect_user_input(websocket, file, validate_input)
-                details['dateofbirth'] = datetime.strptime(details['dateofbirth'], '%Y-%m-%d').strftime('%Y-%m-%d')
-                details['contactnumber'] = int(details['contactnumber'])
                 response = await onboard_personal_details(websocket,details)
                 if response != "Email Send Successfully":
                     await websocket.send_text(response)
@@ -82,7 +80,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 else:
                     await websocket.send_text("Your details have been saved successfully. Check your personal mail for Username and Password.")
                     await websocket.send_text("You will be Navigated to Login Screen")  # Redirect to the new page
-                    await asyncio.sleep(3)  # Add a 3-second delay
+                    await asyncio.sleep(2)  # Add a 3-second delay
                     await websocket.send_text("navigate")
                     break
             else:
@@ -116,7 +114,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 # Check for 'quit' message
                 if user_message.lower() == 'quit':
                     await websocket.send_text("Goodbye, Thanks for using our app!")
-                    await asyncio.sleep(3)
+                    await asyncio.sleep(2)
                     await websocket.send_text("quit")
                     break
                 
