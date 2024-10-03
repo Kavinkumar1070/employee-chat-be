@@ -25,21 +25,21 @@ def validate_input(field, value, datatype):
  
     elif datatype == "date":
         formats = [
-            '%Y-%m-%d',       # 2024-09-13
+            '%d-%m-%Y',       # 2024-09-13
             #'%d-%m-%Y',       # 13-09-2024
             #'%m-%d-%Y',       # 09-13-2024
-           
+            
             #'%m/%d/%Y',       # 09/13/2024
             #'%d/%m/%Y',       # 13/09/2024
-            '%Y/%m/%d',       # 2024/09/13
-           
-            '%Y.%m.%d',       # 2024.09.13
+            '%d/%m/%Y',       # 2024/09/13
+            
+            '%d.%m.%Y',       # 2024.09.13
             #'%d.%m.%Y',       # 13.09.2024
-           
+            
             #'%b %d, %Y',      # Sep 13, 2024
             #'%d %b %Y',       # 13 Sep 2024
-            '%Y %b %d',       # 2024 Sep 13
-           
+            '%d %b %Y',       # 2024 Sep 13
+            
             #'%d %B %Y',       # 13 September 2024
             #'%d %B',          # 13 September (day and month)
             #'%B %d, %Y',      # September 13, 2024
@@ -88,7 +88,12 @@ async def collect_user_input(websocket: WebSocket, jsonfile, validate_input):
                 options = "Single, Married, Divorced, Widowed"
                 message = f"Please provide {field.capitalize()}. Choices are: {options}"
             elif props['datatype'] == 'date':
-                message = f"Please provide {field.capitalize()} (Format: YYYY-MM-DD or similar)"
+                message = f"Please provide {field.capitalize()} (Format: DD-MM-YYY or similar).datatype:date"
+            elif props['datatype'] == 'mobile':
+                message = f"Please provide {field.capitalize()} .datatype:mobile"
+            elif props['datatype'] == 'email':
+                formate=r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+                message = f"Please provide {field.capitalize()} .datatype:regex ,formate:{formate}"
             else:
                 message = f"Please provide {field.capitalize()}: "
  

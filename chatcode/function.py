@@ -140,10 +140,10 @@ def validate(payload_detail, response_config):
                 formats = values.get('formats', [])
                 if not formats:
                     formats = [
-                        '%Y-%m-%d',       # 2024-09-13
-                        '%Y/%m/%d',       # 2024/09/13
-                        '%Y.%m.%d',       # 2024.09.13
-                        '%Y %b %d',       # 2024 Sep 13]
+                        '%d-%m-%Y',       # 2024-09-13
+                        '%d/%m/%Y',       # 2024/09/13           
+                        '%d.%m.%Y',       # 2024.09.13
+                        '%d %b %Y',
                     ]
                 value = value.strip()
                 valid_date = False
@@ -321,6 +321,15 @@ async def ask_user(websocket: WebSocket, pro, pay):
                 choices = pro['payload'][key]['choices']
                 choices_list = ",".join(choices)
                 await websocket.send_text(f"Please provide  {des}. Choices are: {choices_list}")
+            elif data_type == "integer":
+                await websocket.send_text(f"Please provide  {des}. datatype:{data_type} ")
+            elif data_type == "mobile":
+                await websocket.send_text(f"Please provide  {des}. datatype:{data_type} ")
+            elif data_type == "date":
+                await websocket.send_text(f"Please provide  {des}. datatype:{data_type} ")
+            elif data_type == "regex":
+                regex_format = pro['payload'][key]['format']
+                await websocket.send_text(f"Please provide  {des}. datatype:{data_type},regexformat:{regex_format} ")
             else:
                 await websocket.send_text(f"Please provide {des}")
 
@@ -335,5 +344,4 @@ async def ask_user(websocket: WebSocket, pro, pay):
             else:
                 pay['payload'][key] = abc[key]
     return pay
-
 
