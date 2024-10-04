@@ -95,19 +95,6 @@ def split_payload_fields(project_detail: dict):
         return "Error: The project detail provided is not a dictionary on split_payload_fields."
 
 
-def verify_values_from_query(query, payload, config):
-    query_tokens = re.findall(r'\b\w+\b', query.lower())
-    verified_payload = {}
-    for field, value in payload.items():
-        if isinstance(value, str) and value.lower() in query_tokens:
-            verified_payload[field] = value
-        elif value == config.get(field, "None"):
-            verified_payload[field] = value
-        else:
-            verified_payload[field] = "None"
-    return verified_payload
-
-
 def validate(payload_detail, response_config):
     payload_details = payload_detail['payload']
     validated_payload = {}
