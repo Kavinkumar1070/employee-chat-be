@@ -106,7 +106,6 @@ async def get_project_details(websocket: WebSocket, query: str, projectinfo: dic
             await websocket.send_text("contact admin")
         
 
-
 async def fill_payload_values(websocket: WebSocket, query: str, payload_details: dict, jsonfile, apikey, model) -> Dict[str, Any]:
     client = Groq(api_key=os.getenv(apikey))
     try:
@@ -119,7 +118,7 @@ async def fill_payload_values(websocket: WebSocket, query: str, payload_details:
                 "content": f"""You are an expert in filling payload values from a user query based on a configuration file.
 
                 Strict Instructions:
-                1. **Capture Only from User Query:** Extract values strictly from the user query: {query}. Do **not** infer or assume any values.
+                1. **No Assumptions or Guessing:** You must **only** extract values explicitly stated in the user query: {query}. Do **not** infer or assume any values based on common knowledge or patterns. If no valid value is found, return "None".
                 2. **Date Parsing:** Convert natural language expressions for dates such as 'today', 'tomorrow', 'next Friday', 'October 23rd', etc., into the standard format 'DD-MM-YYYY'. Use the current date {today_date} as a reference for relative dates like 'today', 'tomorrow', or 'next Friday'. Always assume the current year unless another year is explicitly mentioned.
                 3. **Use Assigned Values:** If a value is missing in the user query or doesn't match the required format/choices, **use the assigned value** specified in the configuration file {payload_details}.
                 4. **Fill Missing Fields with Assigned Values:** For each field not found in the user query, refer to the configuration file for the field's assigned value. If no valid input is found in the query and no assigned value is provided, use "None".
@@ -153,7 +152,10 @@ async def fill_payload_values(websocket: WebSocket, query: str, payload_details:
         try:
             result = json.loads(sanitized_response)
             response_config = result.get('payload', {})
-            return response_config
+            if len(payload_details.keys())  == len(response_config): 
+                return response_config
+            else:
+                return await fill_payload_values(websocket, query, payload_details, jsonfile,apikey,model)
 
         except json.JSONDecodeError:
             logger.error("Error: Failed to decode JSON from the response on fill_payload_values.")
@@ -183,6 +185,7 @@ async def fill_payload_values(websocket: WebSocket, query: str, payload_details:
         else:
             await websocket.send_text("An unknown error occurred :",e)
             await websocket.send_text("contact admin")
+
 
 
 async def nlp_response(websocket: WebSocket, answer, payload, apikey, model):
