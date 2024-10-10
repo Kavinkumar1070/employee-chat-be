@@ -225,6 +225,21 @@
         "method": "GET",
         "payload":{}
     },
+    "get salary slip": {
+        "project": "get salary slip",
+        "project description": "get a salary or payslip details of an employee",
+        "url": "https://converse-chatbot-be-dev-951891e59e91.herokuapp.com/employee/salary-slip/{month}",
+        "method": "GET",
+        "payload":{
+            "month": {
+                "description": "Month number of the leave records to retrieve (1-12)",
+                "datatype": "choices",  
+                "required": true,
+                "choices":["1","2","3","4","5","6","7","8","9","10","11","12"],
+                "assigned": "None"
+            }
+        }
+    },
     "update password": {
         "project": "update password",
         "project description": "update a employee email password",
